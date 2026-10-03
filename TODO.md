@@ -1,5 +1,18 @@
 # TODO
 
+## Tomorrow
+
+- [ ] **Actions from workflow runs** — Actions is *unknown* even for repositories
+      running workflows (e.g. `rspieker/mongo-catalog`, scheduled, committing
+      from within): commits pushed with `GITHUB_TOKEN` trigger no workflows,
+      so the default branch head has no checks. Base it on the latest run of
+      each workflow instead (`GET /repos/{owner}/{repo}/actions/runs`):
+      *problem* when any workflow's latest completed run failed; attributes
+      per workflow (conclusion, when, link).
+- [ ] **Render templates in tests** — tests compare template strings but never
+      evaluate them, which let `value_json.values` (a dict method in Jinja)
+      through. Evaluate them the way HA would.
+
 ## Next
 
 - [ ] **Remote** — `rspieker/knell` or `konfirm/knell`; prerequisite for the next two.
