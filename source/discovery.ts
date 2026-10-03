@@ -54,6 +54,7 @@ export function payload(source: string, device: Device): Record<string, unknown>
 			name: device.name,
 			manufacturer: device.manufacturer,
 			model: device.model,
+			sw_version: device.version,
 			configuration_url: device.url,
 		},
 		origin: { name: origin },

@@ -1,0 +1,26 @@
+{
+	"data": {
+		"o0": {
+			"login": "rspieker"
+		},
+		"o1": null
+	},
+	"errors": [
+		{
+			"type": "FORBIDDEN",
+			"path": [
+				"o1"
+			],
+			"extensions": {
+				"saml_failure": false
+			},
+			"locations": [
+				{
+					"line": 1,
+					"column": 52
+				}
+			],
+			"message": "The 'konfirm' organization forbids access via a fine-grained personal access tokens if the token's lifetime is greater than 366 days. Please adjust your token's lifetime at the following URL: https://github.com/settings/personal-access-tokens/0"
+		}
+	]
+}

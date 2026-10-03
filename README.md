@@ -35,6 +35,11 @@ appear on their own; repositories going quiet (or excluded) are removed.
 Each device carries: last commit, last push, latest branch, pull requests,
 issues, actions (a *problem* sensor), latest release, stars and forks.
 
+Organizations may refuse fine-grained tokens living longer than 366 days.
+GitHub search quietly omits owners a token may not see, so knell checks
+every owner first and goes *unavailable* with GitHub's reason rather than
+removing their repositories.
+
 ## Running
 
 Requires Node 24+, which runs the TypeScript sources directly — no build step.

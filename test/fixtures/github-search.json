@@ -1,0 +1,508 @@
+{
+	"data": {
+		"search": {
+			"pageInfo": {
+				"hasNextPage": false,
+				"endCursor": "Y3Vyc29yOjEw"
+			},
+			"nodes": [
+				{
+					"nameWithOwner": "rspieker/template-literal-table",
+					"url": "https://github.com/rspieker/template-literal-table",
+					"pushedAt": "2026-03-25T16:23:01Z",
+					"stargazerCount": 7,
+					"forkCount": 1,
+					"issues": {
+						"totalCount": 0
+					},
+					"pullRequests": {
+						"totalCount": 0,
+						"nodes": []
+					},
+					"latestRelease": {
+						"tagName": "v4.2.0",
+						"publishedAt": "2026-03-25T13:42:43Z",
+						"url": "https://github.com/rspieker/template-literal-table/releases/tag/v4.2.0"
+					},
+					"defaultBranchRef": {
+						"name": "master",
+						"target": {
+							"abbreviatedOid": "b0eb9ef",
+							"messageHeadline": "chore: automate release conform release-please docs",
+							"committedDate": "2026-03-25T16:22:50Z",
+							"url": "https://github.com/rspieker/template-literal-table/commit/b0eb9ef658345e40e356f2d31b4a2b2f5d97c44b",
+							"author": {
+								"name": "Rogier Spieker",
+								"user": null
+							},
+							"statusCheckRollup": {
+								"state": "SUCCESS"
+							}
+						}
+					},
+					"refs": {
+						"totalCount": 5,
+						"nodes": [
+							{
+								"name": "fix/tap-spec",
+								"target": {
+									"committedDate": "2021-11-27T12:19:03Z"
+								}
+							},
+							{
+								"name": "maintenance/dependencies-2020-09-06",
+								"target": {
+									"committedDate": "2020-09-06T11:07:38Z"
+								}
+							},
+							{
+								"name": "master",
+								"target": {
+									"committedDate": "2026-03-25T16:22:50Z"
+								}
+							},
+							{
+								"name": "refactor/typescript",
+								"target": {
+									"committedDate": "2020-12-30T12:42:34Z"
+								}
+							},
+							{
+								"name": "release-please--branches--master--components--template-literal-table",
+								"target": {
+									"committedDate": "2026-03-25T13:28:20Z"
+								}
+							}
+						]
+					}
+				},
+				{
+					"nameWithOwner": "rspieker/template-literal-each",
+					"url": "https://github.com/rspieker/template-literal-each",
+					"pushedAt": "2026-03-25T16:22:01Z",
+					"stargazerCount": 2,
+					"forkCount": 0,
+					"issues": {
+						"totalCount": 0
+					},
+					"pullRequests": {
+						"totalCount": 0,
+						"nodes": []
+					},
+					"latestRelease": {
+						"tagName": "v3.1.0",
+						"publishedAt": "2026-03-25T14:53:21Z",
+						"url": "https://github.com/rspieker/template-literal-each/releases/tag/v3.1.0"
+					},
+					"defaultBranchRef": {
+						"name": "master",
+						"target": {
+							"abbreviatedOid": "b8a1f11",
+							"messageHeadline": "Merge pull request #5 from rspieker/release-please--branches--master-…",
+							"committedDate": "2026-03-25T14:53:08Z",
+							"url": "https://github.com/rspieker/template-literal-each/commit/b8a1f11a56d22b488c860fe699cd1f0dcd979201",
+							"author": {
+								"name": "Rogier Spieker",
+								"user": {
+									"login": "rspieker"
+								}
+							},
+							"statusCheckRollup": {
+								"state": "SUCCESS"
+							}
+						}
+					},
+					"refs": {
+						"totalCount": 4,
+						"nodes": [
+							{
+								"name": "feature/improve-typescript-types",
+								"target": {
+									"committedDate": "2026-03-25T16:21:52Z"
+								}
+							},
+							{
+								"name": "maintenance/dependencies-2020-09-06",
+								"target": {
+									"committedDate": "2020-09-06T11:20:23Z"
+								}
+							},
+							{
+								"name": "master",
+								"target": {
+									"committedDate": "2026-03-25T14:53:08Z"
+								}
+							},
+							{
+								"name": "refactor/typescript",
+								"target": {
+									"committedDate": "2020-12-31T12:38:15Z"
+								}
+							}
+						]
+					}
+				},
+				{
+					"nameWithOwner": "rspieker/depless",
+					"url": "https://github.com/rspieker/depless",
+					"pushedAt": "2026-06-18T06:36:13Z",
+					"stargazerCount": 1,
+					"forkCount": 0,
+					"issues": {
+						"totalCount": 0
+					},
+					"pullRequests": {
+						"totalCount": 0,
+						"nodes": []
+					},
+					"latestRelease": null,
+					"defaultBranchRef": {
+						"name": "main",
+						"target": {
+							"abbreviatedOid": "92a8e98",
+							"messageHeadline": "feat: added more type guards demonstrating the native implementations",
+							"committedDate": "2026-06-18T06:36:07Z",
+							"url": "https://github.com/rspieker/depless/commit/92a8e98b171ed45cf57b447198a1551dc8015e27",
+							"author": {
+								"name": "Rogier Spieker",
+								"user": null
+							},
+							"statusCheckRollup": null
+						}
+					},
+					"refs": {
+						"totalCount": 1,
+						"nodes": [
+							{
+								"name": "main",
+								"target": {
+									"committedDate": "2026-06-18T06:36:07Z"
+								}
+							}
+						]
+					}
+				},
+				{
+					"nameWithOwner": "rspieker/depless-mono",
+					"url": "https://github.com/rspieker/depless-mono",
+					"pushedAt": "2026-08-07T05:57:40Z",
+					"stargazerCount": 1,
+					"forkCount": 0,
+					"issues": {
+						"totalCount": 0
+					},
+					"pullRequests": {
+						"totalCount": 0,
+						"nodes": []
+					},
+					"latestRelease": null,
+					"defaultBranchRef": {
+						"name": "main",
+						"target": {
+							"abbreviatedOid": "063a34b",
+							"messageHeadline": "chore: pick repo name",
+							"committedDate": "2026-08-07T05:57:24Z",
+							"url": "https://github.com/rspieker/depless-mono/commit/063a34bfe06281fa40a414b50249218369fb9e6f",
+							"author": {
+								"name": "Rogier Spieker",
+								"user": null
+							},
+							"statusCheckRollup": null
+						}
+					},
+					"refs": {
+						"totalCount": 1,
+						"nodes": [
+							{
+								"name": "main",
+								"target": {
+									"committedDate": "2026-08-07T05:57:24Z"
+								}
+							}
+						]
+					}
+				},
+				{
+					"nameWithOwner": "rspieker/flugrekorder",
+					"url": "https://github.com/rspieker/flugrekorder",
+					"pushedAt": "2026-05-27T21:11:51Z",
+					"stargazerCount": 1,
+					"forkCount": 0,
+					"issues": {
+						"totalCount": 0
+					},
+					"pullRequests": {
+						"totalCount": 0,
+						"nodes": []
+					},
+					"latestRelease": {
+						"tagName": "v1.2.0",
+						"publishedAt": "2026-05-27T21:11:43Z",
+						"url": "https://github.com/rspieker/flugrekorder/releases/tag/v1.2.0"
+					},
+					"defaultBranchRef": {
+						"name": "develop",
+						"target": {
+							"abbreviatedOid": "7aeb71e",
+							"messageHeadline": "chore: release v1.2.0",
+							"committedDate": "2026-05-27T21:11:36Z",
+							"url": "https://github.com/rspieker/flugrekorder/commit/7aeb71e065ccee6bd9bba62d104a27aaeeec2ae9",
+							"author": {
+								"name": "github-actions[bot]",
+								"user": {
+									"login": "github-actions[bot]"
+								}
+							},
+							"statusCheckRollup": null
+						}
+					},
+					"refs": {
+						"totalCount": 3,
+						"nodes": [
+							{
+								"name": "develop",
+								"target": {
+									"committedDate": "2026-05-27T21:11:36Z"
+								}
+							},
+							{
+								"name": "main",
+								"target": {
+									"committedDate": "2026-05-27T21:11:36Z"
+								}
+							},
+							{
+								"name": "release",
+								"target": {
+									"committedDate": "2026-05-27T21:11:36Z"
+								}
+							}
+						]
+					}
+				},
+				{
+					"nameWithOwner": "rspieker/mongo-test-extractor",
+					"url": "https://github.com/rspieker/mongo-test-extractor",
+					"pushedAt": "2026-09-05T10:05:56Z",
+					"stargazerCount": 1,
+					"forkCount": 0,
+					"issues": {
+						"totalCount": 0
+					},
+					"pullRequests": {
+						"totalCount": 0,
+						"nodes": []
+					},
+					"latestRelease": {
+						"tagName": "extraction-202609051005",
+						"publishedAt": "2026-09-05T10:05:56Z",
+						"url": "https://github.com/rspieker/mongo-test-extractor/releases/tag/extraction-202609051005"
+					},
+					"defaultBranchRef": {
+						"name": "main",
+						"target": {
+							"abbreviatedOid": "2018176",
+							"messageHeadline": "fix: derive BSON stub randomness from a per-file seed",
+							"committedDate": "2026-08-16T07:22:10Z",
+							"url": "https://github.com/rspieker/mongo-test-extractor/commit/2018176319b53a42e93f4063e753dc648c875450",
+							"author": {
+								"name": "Rogier Spieker",
+								"user": null
+							},
+							"statusCheckRollup": null
+						}
+					},
+					"refs": {
+						"totalCount": 1,
+						"nodes": [
+							{
+								"name": "main",
+								"target": {
+									"committedDate": "2026-08-16T07:22:10Z"
+								}
+							}
+						]
+					}
+				},
+				{
+					"nameWithOwner": "rspieker/tui",
+					"url": "https://github.com/rspieker/tui",
+					"pushedAt": "2026-06-16T06:43:37Z",
+					"stargazerCount": 1,
+					"forkCount": 0,
+					"issues": {
+						"totalCount": 0
+					},
+					"pullRequests": {
+						"totalCount": 0,
+						"nodes": []
+					},
+					"latestRelease": null,
+					"defaultBranchRef": {
+						"name": "main",
+						"target": {
+							"abbreviatedOid": "76719e8",
+							"messageHeadline": "fix: create the light, heavy and ascii styles dynamically",
+							"committedDate": "2026-06-16T06:43:30Z",
+							"url": "https://github.com/rspieker/tui/commit/76719e843e2c4eecbc4023857084a29ddbecd9e8",
+							"author": {
+								"name": "Rogier Spieker",
+								"user": null
+							},
+							"statusCheckRollup": null
+						}
+					},
+					"refs": {
+						"totalCount": 1,
+						"nodes": [
+							{
+								"name": "main",
+								"target": {
+									"committedDate": "2026-06-16T06:43:30Z"
+								}
+							}
+						]
+					}
+				},
+				{
+					"nameWithOwner": "rspieker/understudy",
+					"url": "https://github.com/rspieker/understudy",
+					"pushedAt": "2026-08-27T15:19:01Z",
+					"stargazerCount": 1,
+					"forkCount": 0,
+					"issues": {
+						"totalCount": 0
+					},
+					"pullRequests": {
+						"totalCount": 0,
+						"nodes": []
+					},
+					"latestRelease": null,
+					"defaultBranchRef": {
+						"name": "main",
+						"target": {
+							"abbreviatedOid": "d3b0e76",
+							"messageHeadline": "feat: first working version",
+							"committedDate": "2026-08-13T04:40:18Z",
+							"url": "https://github.com/rspieker/understudy/commit/d3b0e7675104c8fcd026525e64a57b3e4bd77581",
+							"author": {
+								"name": "Rogier Spieker",
+								"user": null
+							},
+							"statusCheckRollup": null
+						}
+					},
+					"refs": {
+						"totalCount": 2,
+						"nodes": [
+							{
+								"name": "chore/cleanup-import",
+								"target": {
+									"committedDate": "2026-08-27T15:18:55Z"
+								}
+							},
+							{
+								"name": "main",
+								"target": {
+									"committedDate": "2026-08-13T04:40:18Z"
+								}
+							}
+						]
+					}
+				},
+				{
+					"nameWithOwner": "rspieker/mongo-catalog",
+					"url": "https://github.com/rspieker/mongo-catalog",
+					"pushedAt": "2026-10-03T19:37:18Z",
+					"stargazerCount": 1,
+					"forkCount": 0,
+					"issues": {
+						"totalCount": 0
+					},
+					"pullRequests": {
+						"totalCount": 0,
+						"nodes": []
+					},
+					"latestRelease": {
+						"tagName": "catalog-2026-10-03T19-37-16Z",
+						"publishedAt": "2026-10-03T19:37:18Z",
+						"url": "https://github.com/rspieker/mongo-catalog/releases/tag/catalog-2026-10-03T19-37-16Z"
+					},
+					"defaultBranchRef": {
+						"name": "main",
+						"target": {
+							"abbreviatedOid": "f31ea30",
+							"messageHeadline": "Update catalog results 2026-10-03T19:37:15+0000",
+							"committedDate": "2026-10-03T19:37:15Z",
+							"url": "https://github.com/rspieker/mongo-catalog/commit/f31ea30d5e2cd01bd99c08000c0abdd29ba719b0",
+							"author": {
+								"name": "GitHub Actions Recipe Bot",
+								"user": null
+							},
+							"statusCheckRollup": null
+						}
+					},
+					"refs": {
+						"totalCount": 2,
+						"nodes": [
+							{
+								"name": "chore/complete-overhaul",
+								"target": {
+									"committedDate": "2026-02-08T09:32:34Z"
+								}
+							},
+							{
+								"name": "main",
+								"target": {
+									"committedDate": "2026-10-03T19:37:15Z"
+								}
+							}
+						]
+					}
+				},
+				{
+					"nameWithOwner": "rspieker/depless-server",
+					"url": "https://github.com/rspieker/depless-server",
+					"pushedAt": "2026-07-21T05:48:00Z",
+					"stargazerCount": 1,
+					"forkCount": 0,
+					"issues": {
+						"totalCount": 0
+					},
+					"pullRequests": {
+						"totalCount": 0,
+						"nodes": []
+					},
+					"latestRelease": null,
+					"defaultBranchRef": {
+						"name": "main",
+						"target": {
+							"abbreviatedOid": "165b968",
+							"messageHeadline": "fix: ensure deno has access to env",
+							"committedDate": "2026-07-21T05:47:53Z",
+							"url": "https://github.com/rspieker/depless-server/commit/165b9680be7ad98f7b4a4cc04eed631037416c15",
+							"author": {
+								"name": "Rogier Spieker",
+								"user": null
+							},
+							"statusCheckRollup": {
+								"state": "SUCCESS"
+							}
+						}
+					},
+					"refs": {
+						"totalCount": 1,
+						"nodes": [
+							{
+								"name": "main",
+								"target": {
+									"committedDate": "2026-07-21T05:47:53Z"
+								}
+							}
+						]
+					}
+				}
+			]
+		}
+	}
+}

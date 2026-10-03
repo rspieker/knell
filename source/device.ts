@@ -26,6 +26,7 @@ export type Device = {
 	url?: string;
 	manufacturer?: string;
 	model?: string;
+	version?: string;
 	entities: Array<Entity>;
 };
 
