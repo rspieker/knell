@@ -34,9 +34,10 @@ function component(source: string, device: Device, entity: Entity): Record<strin
 		platform: entity.component,
 		unique_id: `${identifier(source, device)}_${key}`,
 		name: entity.name,
-		value_template: `{{ value_json.values.${key} }}`,
+		// brackets, as dot notation finds dict methods first (`values`, `items`, …)
+		value_template: `{{ value_json['values']['${key}'] }}`,
 		json_attributes_topic: topics(source, device).state,
-		json_attributes_template: `{{ value_json.attributes.${key} | tojson }}`,
+		json_attributes_template: `{{ value_json['attributes']['${key}'] | tojson }}`,
 		availability: [{ topic: status }, { topic: availability(source) }],
 		availability_mode: 'all',
 		qos: 1,
