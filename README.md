@@ -1,7 +1,38 @@
 # knell
 
+> Something happened in one of your repositories. Something else didn't. Either way, Home Assistant ought to know.
+
+> A bell, rung on schedule. It does not judge the news, nor soften it, nor wonder whether you wanted to hear it. It announces. It waits. It announces again. And should it ever stop, that, too, is news.
+
 Announces whatever you bolt on to Home Assistant, by way of MQTT discovery.
 GitHub is merely the first bell.
+
+Design principle: **announce everything, remember nothing, fall silent audibly.**
+knell keeps no state of its own; the broker remembers what was announced, and
+the broker announces when knell is gone.
+
+---
+
+## When to use this
+
+- You maintain more repositories than you look at. Some of them have started to notice.
+- A build went red on Tuesday. You found out on Friday, from a stranger.
+- Your dashboard knows the temperature of the fridge, but not whether anyone ever merged that pull request.
+- You would rather be told than go and check. Checking is where mornings go to die.
+- Something should have happened by now, and the silence is beginning to sound deliberate.
+
+---
+
+## Why not…
+
+- **The Home Assistant GitHub integration** — it follows the repositories you starred, which is a different relationship altogether.
+- **REST or command line sensors** — one hand-written entity at a time, and nobody tells them when a repository is born or laid to rest.
+- **GitHub notifications** — they arrive in your inbox, where announcements go to wait.
+- **Checking github.com** — you have to go there. That is rather the point.
+
+---
+
+## How it works
 
 1. On boot, knell publishes **retained discovery payloads** so entities
    materialize in HA automatically (surviving restarts of either side).
@@ -10,6 +41,8 @@ GitHub is merely the first bell.
    if the bell stops ringing — silence is itself an announcement.
 
 New data sources cost a publisher function, nothing else.
+
+---
 
 ## Running
 
@@ -23,6 +56,8 @@ npm start
 
 While knell is down (or the laptop it runs on sleeps), its devices remain in
 HA as *unavailable*; the first poll after coming back revives them.
+
+---
 
 ## Configuration
 
@@ -44,6 +79,8 @@ reads them from `.env` when present.
 A source without its configuration (e.g. no `GITHUB_TOKEN`) simply stays
 silent. An unreachable broker is retried every five seconds.
 
+---
+
 ## Bells
 
 ### GitHub
@@ -51,7 +88,7 @@ silent. An unreachable broker is retried every five seconds.
 Every public, non-archived, non-forked repository of `GITHUB_OWNERS` that saw
 a push within `GITHUB_ACTIVE_DAYS` becomes a device in HA, with its latest
 release as version. New repositories appear on their own; repositories going
-quiet (or excluded) are removed.
+quiet (or excluded) are removed — quietly, as is only fitting.
 
 | Entity         | Type                         | Attributes                               |
 |----------------|------------------------------|------------------------------------------|
@@ -75,6 +112,8 @@ than 366 days; GitHub search quietly omits owners a token may not see, so
 knell checks every owner first and goes *unavailable* with GitHub's reason
 rather than removing their repositories.
 
+---
+
 ## How it talks MQTT
 
 | Topic                                   | Payload                                   |
@@ -90,13 +129,16 @@ exist. Entities require both status topics to be `online`, so a failing
 source reads differently from a knell that is gone. Payloads from other
 integrations are never touched.
 
-To remove a device by hand, delete it in HA; as long as its source still
-returns it, the next poll brings it back, so exclude it at the source.
+Deleting a device in HA is a polite suggestion: as long as its source still
+returns it, the next poll brings it back. To be rid of it, exclude it at the
+source.
+
+---
 
 ## Adding a bell
 
 A source returns devices; the rest — discovery, state, removal,
-availability — is knell's business.
+availability — is knell's business, and knell is particular about its business.
 
 ```ts
 import type { Source } from './device.ts';
@@ -119,6 +161,8 @@ export const weather: Source = {
 
 Register it in `source/main.ts`. Anything in `config` is passed to HA as is.
 
+---
+
 ## Development
 
 ```sh
@@ -133,6 +177,8 @@ Formatting and linting follow `biome.json`, applied by the editor.
 
 See [TODO.md](TODO.md) for what's next.
 
+---
+
 ## Naming
 
 - **knell** — the bell that announces. Tolling, so you don't have to
@@ -140,6 +186,8 @@ See [TODO.md](TODO.md) for what's next.
 - Future bolt-ons already reserved: **actuary** (trend prediction from
   collected history) and **auditor** (cross-checking HA state against
   reality). A small, ominous civil service.
+
+---
 
 ## License
 
