@@ -1,0 +1,55 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.5.15/schema.json",
+	"files": {
+		"includes": ["source/**", "test/**"]
+	},
+	"formatter": {
+		"indentStyle": "tab",
+		"indentWidth": 4,
+		"lineEnding": "lf"
+	},
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "single"
+		}
+	},
+	"linter": {
+		"rules": {
+			"recommended": true,
+			"style": {
+				"useConsistentArrayType": {
+					"level": "error",
+					"options": { "syntax": "generic" }
+				},
+				"useImportType": "error",
+				"noDefaultExport": "error",
+				"noParameterAssign": "error"
+			},
+			"suspicious": {
+				"noConsole": "error"
+			}
+		}
+	},
+	"overrides": [
+		{
+			"includes": ["**/*.spec.ts"],
+			"linter": {
+				"rules": {
+					"complexity": {
+						"useArrowFunction": "off"
+					}
+				}
+			}
+		},
+		{
+			"includes": ["source/log.ts"],
+			"linter": {
+				"rules": {
+					"suspicious": {
+						"noConsole": "off"
+					}
+				}
+			}
+		}
+	]
+}

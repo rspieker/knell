@@ -1,0 +1,28 @@
+{
+	"name": "knell",
+	"version": "0.0.0",
+	"private": true,
+	"description": "Announces whatever you bolt on to Home Assistant, by way of MQTT discovery",
+	"type": "module",
+	"main": "source/main.ts",
+	"engines": {
+		"node": ">=24"
+	},
+	"scripts": {
+		"start": "node --env-file-if-exists=.env source/main.ts",
+		"check": "tsc",
+		"test": "npm run test:unit && npm run test:functional",
+		"test:unit": "node --test 'source/**/*.spec.ts'",
+		"test:functional": "node --test 'test/**/*.spec.ts'",
+		"test:coverage": "node --test --experimental-test-coverage --test-coverage-exclude='**/*.spec.ts' --test-coverage-exclude='test/**' 'source/**/*.spec.ts' 'test/**/*.spec.ts'"
+	},
+	"author": "Rogier Spieker <rogier@konfirm.io>",
+	"license": "MIT",
+	"dependencies": {
+		"mqtt": "^5.16.0"
+	},
+	"devDependencies": {
+		"@types/node": "^24.19.1",
+		"typescript": "^7.0.2"
+	}
+}
