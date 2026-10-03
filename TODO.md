@@ -60,6 +60,43 @@
 Check first whether HA already does a bell well (it has integrations for
 certificate expiry, ping and many more); knell is for what it doesn't.
 
+## Origins, and a debt upstream
+
+knell is an idea that had been slumbering for a while: a bell for whatever
+deserves announcing in HA. What woke it was the core GitHub integration
+following the repositories you starred, while a developer mostly wants to
+follow the ones they maintain. Should the mood ever strike, the request
+below is ready to be filed (check the integration's current behaviour first,
+it may have moved on).
+
+<details>
+<summary>Draft feature request: GitHub integration, follow repositories by owner</summary>
+
+**Title:** GitHub: follow all (active) repositories of a user or organization
+
+**The problem:** the integration is built around following individual
+repositories, starred ones in particular. Developers maintaining their own
+repositories, across a personal account and an organization or two, want
+the opposite: every repository they own, appearing as it is created and
+disappearing as it is archived or goes dormant, without revisiting the
+integration's configuration.
+
+**Proposal:** an option to follow repositories by owner (users and/or
+organizations), with filters for visibility, archived, forks and recent
+activity (e.g. "pushed within the last year"). GitHub's search API covers
+all of this in a single paginated GraphQL query
+(`user:a user:b is:public archived:false pushed:>=YYYY-MM-DD`).
+
+**Worth knowing:** search silently omits owners a token may not see (e.g.
+an organization rejecting fine-grained tokens living longer than 366 days),
+so verify each owner first rather than removing its repositories.
+
+**Prior art:** a working implementation as MQTT discovery, including the
+per-repository entities (last commit, last push, latest branch, pull
+requests, issues, check status, latest release, stars, forks): knell.
+
+</details>
+
 ## The civil service
 
 - **actuary** — trend prediction from collected history: stars per month,
