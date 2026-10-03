@@ -91,6 +91,13 @@ describe('knell', () => {
 		it('a device per repository, retained, with all entities as components', async () => {
 			await ring(bell([repository('konfirm/geojson')]));
 
+			const shared = {
+				json_attributes_topic: state,
+				availability: [{ topic: 'knell/status' }, { topic: 'knell/bell/status' }],
+				availability_mode: 'all',
+				qos: 1,
+			};
+
 			assert.deepEqual(broker.read(config), {
 				device: {
 					identifiers: ['knell_bell_konfirm_geojson'],
@@ -100,10 +107,6 @@ describe('knell', () => {
 				},
 				origin: { name: 'knell' },
 				state_topic: state,
-				json_attributes_topic: state,
-				availability: [{ topic: 'knell/status' }, { topic: 'knell/bell/status' }],
-				availability_mode: 'all',
-				qos: 1,
 				components: {
 					stars: {
 						platform: 'sensor',
@@ -111,6 +114,7 @@ describe('knell', () => {
 						name: 'Stars',
 						value_template: '{{ value_json.values.stars }}',
 						json_attributes_template: '{{ value_json.attributes.stars | tojson }}',
+						...shared,
 						state_class: 'total',
 					},
 					actions: {
@@ -119,6 +123,7 @@ describe('knell', () => {
 						name: 'Actions',
 						value_template: '{{ value_json.values.actions }}',
 						json_attributes_template: '{{ value_json.attributes.actions | tojson }}',
+						...shared,
 						device_class: 'problem',
 					},
 					latest_release: {
@@ -127,9 +132,21 @@ describe('knell', () => {
 						name: 'Latest release',
 						value_template: '{{ value_json.values.latest_release }}',
 						json_attributes_template: '{{ value_json.attributes.latest_release | tojson }}',
+						...shared,
 					},
 				},
 			});
+		});
+
+		it('only options HA accepts at device level, as it rejects the entire device otherwise', async () => {
+			await ring(bell([repository('konfirm/geojson')]));
+
+			assert.deepEqual(Object.keys(broker.read(config) as object).sort(), [
+				'components',
+				'device',
+				'origin',
+				'state_topic',
+			]);
 		});
 
 		it('the state of all entities of a device in a single retained message', async () => {

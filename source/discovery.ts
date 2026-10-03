@@ -27,22 +27,28 @@ export function topics(source: string, device: Device): { config: string; state:
 	};
 }
 
-function component(id: string, entity: Entity): Record<string, unknown> {
+function component(source: string, device: Device, entity: Entity): Record<string, unknown> {
 	const key = slug(entity.key);
 
 	return {
 		platform: entity.component,
-		unique_id: `${id}_${key}`,
+		unique_id: `${identifier(source, device)}_${key}`,
 		name: entity.name,
 		value_template: `{{ value_json.values.${key} }}`,
+		json_attributes_topic: topics(source, device).state,
 		json_attributes_template: `{{ value_json.attributes.${key} | tojson }}`,
+		availability: [{ topic: status }, { topic: availability(source) }],
+		availability_mode: 'all',
+		qos: 1,
 		...entity.config,
 	};
 }
 
 /**
  * Home Assistant device discovery payload, one per device, carrying all of
- * its entities as components sharing a single state topic.
+ * its entities as components sharing a single state topic. Only a few
+ * options may be shared at device level (HA rejects the entire device for
+ * e.g. `json_attributes_topic`), so all but the state topic go per component.
  */
 export function payload(source: string, device: Device): Record<string, unknown> {
 	const id = identifier(source, device);
@@ -59,11 +65,9 @@ export function payload(source: string, device: Device): Record<string, unknown>
 		},
 		origin: { name: origin },
 		state_topic: state,
-		json_attributes_topic: state,
-		availability: [{ topic: status }, { topic: availability(source) }],
-		availability_mode: 'all',
-		qos: 1,
-		components: Object.fromEntries(device.entities.map((entity) => [slug(entity.key), component(id, entity)])),
+		components: Object.fromEntries(
+			device.entities.map((entity) => [slug(entity.key), component(source, device, entity)]),
+		),
 	};
 }
 
