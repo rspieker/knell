@@ -44,3 +44,19 @@
 {%- macro knell_icon(entity) -%}
   {{- {'failing': 'mdi:flash-alert', 'attention': 'mdi:alert-circle'}.get(knell_condition(entity), 'mdi:source-repository') -}}
 {%- endmacro -%}
+
+{#- days since the latest release, empty when there is none -#}
+{%- macro knell_release_age(entity) -%}
+  {%- set published = state_attr(knell_sibling(entity, 'latest_release'), 'published') -%}
+  {%- if published -%}{{ (now() - as_datetime(published)).days }}{%- endif -%}
+{%- endmacro -%}
+
+{#- fresh under six months, ageing up to a year, stale beyond; nothing without a release -#}
+{%- macro knell_release_color(entity) -%}
+  {%- set age = knell_release_age(entity) -%}
+  {%- if age == '' -%}
+  {%- elif age | int < 183 -%}green
+  {%- elif age | int <= 365 -%}orange
+  {%- else -%}red
+  {%- endif -%}
+{%- endmacro -%}

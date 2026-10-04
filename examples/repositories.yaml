@@ -47,6 +47,10 @@ sections:
                   {% from 'knell.jinja' import knell_icon %}{{ knell_icon(entity) }}
                 icon_color: >-
                   {% from 'knell.jinja' import knell_color %}{{ knell_color(entity) }}
+                badge_icon: >-
+                  {% from 'knell.jinja' import knell_release_color %}{{ 'mdi:tag' if knell_release_color(entity) }}
+                badge_color: >-
+                  {% from 'knell.jinja' import knell_release_color %}{{ knell_release_color(entity) }}
                 multiline_secondary: true
                 tap_action:
                   action: more-info
