@@ -144,7 +144,8 @@ rather than removing their repositories.
 
 knell provides; HA interprets. [`examples/knell.jinja`](examples/knell.jinja)
 holds template macros deciding what deserves attention, written once, and
-[`examples/repositories.yaml`](examples/repositories.yaml) an
+[`examples/repositories.yaml`](examples/repositories.yaml) a sections view
+with the bell in its heading and an
 [auto-entities](https://github.com/thomasloven/lovelace-auto-entities) card
 showing every repository as a
 [Mushroom](https://github.com/piitaya/lovelace-mushroom) card, most recently
