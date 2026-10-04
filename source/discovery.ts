@@ -12,8 +12,13 @@ export function slug(value: string): string {
 		.replace(/^_+|_+$/g, '');
 }
 
+/** Whether a device is the bell itself, rather than one of its devices */
+export function isBell(device: Device): boolean {
+	return device.id === '';
+}
+
 export function identifier(source: string, device: Device): string {
-	return `${base}_${slug(source)}_${slug(device.id)}`;
+	return [base, slug(source), slug(device.id)].filter(Boolean).join('_');
 }
 
 export function availability(source: string): string {
@@ -23,22 +28,26 @@ export function availability(source: string): string {
 export function topics(source: string, device: Device): { config: string; state: string } {
 	return {
 		config: `${prefix}/device/${identifier(source, device)}/config`,
-		state: `${base}/${slug(source)}/${slug(device.id)}/state`,
+		state: [base, slug(source), slug(device.id), 'state'].filter(Boolean).join('/'),
 	};
 }
 
 function component(source: string, device: Device, entity: Entity): Record<string, unknown> {
 	const key = slug(entity.key);
+	const id = `${identifier(source, device)}_${key}`;
+	// the bell keeps reporting while its source fails, that is its purpose
+	const required = isBell(device) ? [status] : [status, availability(source)];
 
 	return {
 		platform: entity.component,
-		unique_id: `${identifier(source, device)}_${key}`,
+		unique_id: id,
+		default_entity_id: `${entity.component}.${id}`,
 		name: entity.name,
 		// brackets, as dot notation finds dict methods first (`values`, `items`, …)
 		value_template: `{{ value_json['values']['${key}'] }}`,
 		json_attributes_topic: topics(source, device).state,
 		json_attributes_template: `{{ value_json['attributes']['${key}'] | tojson }}`,
-		availability: [{ topic: status }, { topic: availability(source) }],
+		availability: required.map((topic) => ({ topic })),
 		availability_mode: 'all',
 		qos: 1,
 		...entity.config,
@@ -50,25 +59,36 @@ function component(source: string, device: Device, entity: Entity): Record<strin
  * its entities as components sharing a single state topic. Only a few
  * options may be shared at device level (HA rejects the entire device for
  * e.g. `json_attributes_topic`), so all but the state topic go per component.
+ *
+ * Components announced before (`previous`, key → platform) but no longer
+ * present are removed by announcing them with nothing but their platform.
  */
-export function payload(source: string, device: Device): Record<string, unknown> {
-	const id = identifier(source, device);
-	const { state } = topics(source, device);
+export function payload(
+	source: string,
+	device: Device,
+	previous: Record<string, string> = {},
+): Record<string, unknown> {
+	const components: Record<string, Record<string, unknown>> = Object.fromEntries(
+		device.entities.map((entity) => [slug(entity.key), component(source, device, entity)]),
+	);
+
+	for (const [key, platform] of Object.entries(previous)) {
+		components[key] ??= { platform };
+	}
 
 	return {
 		device: {
-			identifiers: [id],
+			identifiers: [identifier(source, device)],
 			name: device.name,
 			manufacturer: device.manufacturer,
 			model: device.model,
 			sw_version: device.version,
 			configuration_url: device.url,
+			via_device: isBell(device) ? undefined : `${base}_${slug(source)}`,
 		},
 		origin: { name: origin },
-		state_topic: state,
-		components: Object.fromEntries(
-			device.entities.map((entity) => [slug(entity.key), component(source, device, entity)]),
-		),
+		state_topic: topics(source, device).state,
+		components,
 	};
 }
 

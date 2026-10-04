@@ -20,7 +20,7 @@ export type BinarySensor = EntityBase & {
 export type Entity = Sensor | BinarySensor;
 
 export type Device = {
-	/** Unique within its source, e.g. `konfirm/geojson` */
+	/** Unique within its source, e.g. `konfirm/geojson`; empty for the bell itself */
 	id: string;
 	name: string;
 	url?: string;
@@ -30,13 +30,22 @@ export type Device = {
 	entities: Array<Entity>;
 };
 
+export type Poll = {
+	devices: Array<Device>;
+	/** Entities of the bell itself, e.g. a remaining rate limit */
+	entities?: Array<Entity>;
+};
+
 /**
  * A bell: something knell polls and announces. Returning a device makes it
- * exist in Home Assistant, no longer returning it removes it.
+ * exist in Home Assistant, no longer returning it removes it. Every bell is
+ * a device of its own as well, through which its devices are connected.
  */
 export type Source = {
 	id: string;
+	/** Display name, e.g. `GitHub`; defaults to the id */
+	name?: string;
 	/** Poll interval in minutes, overrides the global interval */
 	interval?: number;
-	poll(): Promise<Array<Device>>;
+	poll(): Promise<Poll>;
 };

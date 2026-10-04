@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { afterEach, beforeEach, describe, it, mock } from 'node:test';
-import type { Device, Source } from '../source/device.ts';
+import type { Device, Entity, Source } from '../source/device.ts';
 import { status } from '../source/discovery.ts';
 import { createKnell } from '../source/knell.ts';
 import { createBroker } from './broker.ts';
@@ -37,6 +37,7 @@ function repository(id: string, stars = 0): Device {
 
 type Bell = Source & {
 	devices: Array<Device>;
+	entities?: Array<Entity>;
 	failure?: Error;
 };
 
@@ -48,7 +49,7 @@ function bell(devices: Array<Device>): Bell {
 			if (source.failure) {
 				throw source.failure;
 			}
-			return source.devices;
+			return { devices: source.devices, entities: source.entities };
 		},
 	};
 
@@ -77,7 +78,7 @@ describe('knell', () => {
 
 	beforeEach(() => {
 		broker = createBroker();
-		mock.timers.enable({ apis: ['setTimeout'] });
+		mock.timers.enable({ apis: ['setTimeout', 'Date'], now: Date.parse('2026-10-04T12:00:00Z') });
 		mock.method(console, 'info', () => {});
 		mock.method(console, 'error', () => {});
 	});
@@ -104,6 +105,7 @@ describe('knell', () => {
 					name: 'konfirm/geojson',
 					manufacturer: 'GitHub',
 					configuration_url: 'https://github.com/konfirm/geojson',
+					via_device: 'knell_bell',
 				},
 				origin: { name: 'knell' },
 				state_topic: state,
@@ -111,6 +113,7 @@ describe('knell', () => {
 					stars: {
 						platform: 'sensor',
 						unique_id: 'knell_bell_konfirm_geojson_stars',
+						default_entity_id: 'sensor.knell_bell_konfirm_geojson_stars',
 						name: 'Stars',
 						value_template: "{{ value_json['values']['stars'] }}",
 						json_attributes_template: "{{ value_json['attributes']['stars'] | tojson }}",
@@ -120,6 +123,7 @@ describe('knell', () => {
 					actions: {
 						platform: 'binary_sensor',
 						unique_id: 'knell_bell_konfirm_geojson_actions',
+						default_entity_id: 'binary_sensor.knell_bell_konfirm_geojson_actions',
 						name: 'Actions',
 						value_template: "{{ value_json['values']['actions'] }}",
 						json_attributes_template: "{{ value_json['attributes']['actions'] | tojson }}",
@@ -129,6 +133,7 @@ describe('knell', () => {
 					latest_release: {
 						platform: 'sensor',
 						unique_id: 'knell_bell_konfirm_geojson_latest_release',
+						default_entity_id: 'sensor.knell_bell_konfirm_geojson_latest_release',
 						name: 'Latest release',
 						value_template: "{{ value_json['values']['latest_release'] }}",
 						json_attributes_template: "{{ value_json['attributes']['latest_release'] | tojson }}",
@@ -191,7 +196,74 @@ describe('knell', () => {
 		});
 	});
 
+	describe('rings its own bell', () => {
+		const bellConfig = 'homeassistant/device/knell_bell/config';
+
+		it('as a device through which the devices of its source are connected', async () => {
+			const source = bell([repository('konfirm/geojson')]);
+
+			source.name = 'Bell';
+			source.entities = [{ key: 'rate_limit', name: 'Rate limit', component: 'sensor', value: 42 }];
+			await ring(source);
+
+			const announcement = broker.read(bellConfig) as {
+				device: unknown;
+				components: Record<string, { availability: unknown }>;
+			};
+
+			assert.deepEqual(announcement.device, {
+				identifiers: ['knell_bell'],
+				name: 'knell Bell',
+				manufacturer: 'knell',
+				model: 'Bell',
+			});
+			assert.deepEqual(Object.keys(announcement.components), ['poll', 'last_poll', 'devices', 'rate_limit']);
+			assert.deepEqual(broker.read('knell/bell/state'), {
+				values: { poll: 'OFF', last_poll: '2026-10-04T12:00:00.000Z', devices: 1, rate_limit: 42 },
+				attributes: { poll: { error: null }, last_poll: {}, devices: {}, rate_limit: {} },
+			});
+		});
+
+		it('reporting a failing poll and why, while remembering the last good one', async () => {
+			const source = bell([repository('konfirm/geojson')]);
+
+			await ring(source);
+			source.failure = new Error('rate limited');
+			await toll();
+
+			assert.deepEqual(broker.read('knell/bell/state'), {
+				values: { poll: 'ON', last_poll: '2026-10-04T12:00:00.000Z', devices: 1 },
+				attributes: { poll: { error: 'rate limited' }, last_poll: {}, devices: {} },
+			});
+		});
+
+		it('remaining available while its source is not, as that is when it matters', async () => {
+			await ring(bell([]));
+
+			const { components } = broker.read(bellConfig) as { components: Record<string, { availability: unknown }> };
+
+			assert.deepEqual(components.poll?.availability, [{ topic: 'knell/status' }]);
+		});
+	});
+
 	describe('removes', () => {
+		it('an entity no longer returned, announcing it with only its platform once', async () => {
+			const source = bell([repository('konfirm/geojson')]);
+			const withoutActions = repository('konfirm/geojson');
+			const components = () => (broker.read(config) as { components: Record<string, unknown> }).components;
+
+			withoutActions.entities = withoutActions.entities.filter(({ key }) => key !== 'actions');
+			await ring(source);
+			source.devices = [withoutActions];
+			await toll();
+
+			assert.deepEqual(components().actions, { platform: 'binary_sensor' });
+
+			await toll();
+
+			assert.deepEqual(Object.keys(components()), ['stars', 'latest_release']);
+		});
+
 		it('a device that is no longer returned by its source', async () => {
 			const source = bell([repository('konfirm/geojson'), repository('konfirm/flugrekorder')]);
 
