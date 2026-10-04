@@ -50,16 +50,19 @@ export function createBroker() {
 			return payload === undefined ? undefined : JSON.parse(payload);
 		},
 
-		connect({ status }: { status: string }): Transport & { vanish(): void } {
+		connect({ status }: { status?: string } = {}): Transport & { vanish(): void } {
 			const client: Client = { subscriptions: [] };
 			const leave = (): void => {
-				if (clients.delete(client)) {
+				if (clients.delete(client) && status) {
 					route({ topic: status, payload: 'offline', retain: true });
 				}
 			};
 
 			clients.add(client);
-			route({ topic: status, payload: 'online', retain: true });
+
+			if (status) {
+				route({ topic: status, payload: 'online', retain: true });
+			}
 
 			return {
 				async publish(topic, payload, { retain = false } = {}) {

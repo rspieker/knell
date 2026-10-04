@@ -8,8 +8,8 @@ export type MqttOptions = {
 	url: string;
 	username?: string;
 	password?: string;
-	/** Topic carrying `online`/`offline`, the latter doubling as last will */
-	status: string;
+	/** Topic carrying `online`/`offline`, the latter doubling as last will; none for a silent visit */
+	status?: string;
 };
 
 /**
@@ -22,12 +22,15 @@ export async function connectMqtt({ url, username, password, status }: MqttOptio
 		username,
 		password,
 		reconnectPeriod: 5_000,
-		will: { topic: status, payload: 'offline', qos: 1, retain: true },
+		will: status ? { topic: status, payload: 'offline', qos: 1, retain: true } : undefined,
 	});
 	const connected = new Promise((resolve) => client.once('connect', resolve));
 	const subscriptions: Array<[string, Handler]> = [];
-	const announce = (payload: 'online' | 'offline') =>
-		client.publishAsync(status, payload, { qos: 1, retain: true });
+	const announce = async (payload: 'online' | 'offline') => {
+		if (status) {
+			await client.publishAsync(status, payload, { qos: 1, retain: true });
+		}
+	};
 
 	client.on('connect', () => {
 		log.info(`connected to ${url}`);

@@ -1,12 +1,23 @@
 import { loadConfig } from './config.ts';
 import type { Source } from './device.ts';
 import { status } from './discovery.ts';
+import { forget } from './forget.ts';
 import { createGithubSource, loadGithubConfig } from './github.ts';
 import { createKnell } from './knell.ts';
 import { log } from './log.ts';
 import { connectMqtt } from './mqtt.ts';
 
 const config = loadConfig(process.env);
+
+if (process.argv[2] === 'forget') {
+	// a silent visit: no status, so nothing is left behind
+	const transport = await connectMqtt(config.mqtt);
+
+	log.info(`forgot ${await forget(transport)} retained topic(s)`);
+	await transport.end();
+	process.exit(0);
+}
+
 const github = loadGithubConfig(process.env);
 const sources: Array<Source> = [];
 

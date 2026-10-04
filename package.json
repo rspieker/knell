@@ -10,6 +10,7 @@
 	},
 	"scripts": {
 		"start": "node --env-file-if-exists=.env source/main.ts",
+		"forget": "node --env-file-if-exists=.env source/main.ts forget",
 		"check": "tsc",
 		"test": "npm run test:unit && npm run test:functional",
 		"test:unit": "node --test 'source/**/*.spec.ts'",
