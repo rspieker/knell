@@ -1,17 +1,30 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { isExcluded, loadGithubConfig } from './github.ts';
+import { loadGithubConfig } from './github.ts';
 
 describe('loadGithubConfig', () => {
 	it('leaves the source out without a token', () => {
 		assert.equal(loadGithubConfig({ GITHUB_OWNERS: 'rspieker' }), undefined);
 	});
 
-	it('trims owners and exclusions, defaulting to a year of activity', () => {
+	it('trims owners and exclusions, defaulting to a year of activity and common names', () => {
 		assert.deepEqual(
 			loadGithubConfig({ GITHUB_TOKEN: 't', GITHUB_OWNERS: ' rspieker , konfirm,', GITHUB_EXCLUDE: 'a/*, ' }),
-			{ token: 't', owners: ['rspieker', 'konfirm'], activeDays: 365, exclude: ['a/*'] },
+			{
+				token: 't',
+				owners: ['rspieker', 'konfirm'],
+				activeDays: 365,
+				exclude: ['a/*'],
+				tests: ['test*'],
+				branches: ['main', 'master', 'develop', 'release*'],
+			},
 		);
+	});
+
+	it('replaces the defaults for tests and long-lived branches when given', () => {
+		const config = loadGithubConfig({ GITHUB_TOKEN: 't', GITHUB_OWNERS: 'x', GITHUB_TESTS: 'ci', GITHUB_BRANCHES: 'trunk' });
+
+		assert.deepEqual([config?.tests, config?.branches], [['ci'], ['trunk']]);
 	});
 
 	describe('refuses to start', () => {
@@ -22,30 +35,6 @@ describe('loadGithubConfig', () => {
 
 		for (const [description, env, error] of cases) {
 			it(description, () => assert.throws(() => loadGithubConfig(env), error));
-		}
-	});
-});
-
-describe('isExcluded', () => {
-	describe('returns true for', () => {
-		const cases: Array<[string, string, string]> = [
-			['a wildcard owner', '*/sandbox', 'konfirm/sandbox'],
-			['a wildcard spanning the separator', 'rspieker*box', 'rspieker/sandbox'],
-		];
-
-		for (const [description, pattern, name] of cases) {
-			it(description, () => assert.equal(isExcluded([pattern], name), true));
-		}
-	});
-
-	describe('returns false for', () => {
-		const cases: Array<[string, string, string]> = [
-			['a partial name without wildcard', 'rspieker/tui', 'rspieker/tui-old'],
-			['regular expression characters, taken literally', 'rspieker/t.i', 'rspieker/tui'],
-		];
-
-		for (const [description, pattern, name] of cases) {
-			it(description, () => assert.equal(isExcluded([pattern], name), false));
 		}
 	});
 });
