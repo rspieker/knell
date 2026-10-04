@@ -41,6 +41,11 @@
 
 ## GitHub, more to announce
 
+- **Keep or deprecate** — an overview of repositories gone quiet without being
+  archived: the fine line between "kept in case I return to it" and "never
+  again", which deserves a deliberate archive rather than abandonment.
+  Possibly no more than a long `GITHUB_ACTIVE_DAYS` and a card judging age.
+
 - **Unreleased commits** — commits on the default branch since the latest
   release: a "release due" sensor.
 - **Oldest open pull request** age as its own sensor (now an attribute), and
