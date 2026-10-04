@@ -41,6 +41,15 @@
 
 ## GitHub, more to announce
 
+- **Expectations differ per repository** — two weeks without a release is
+  alarming for `rspieker/mongo-catalog` (Monger stalled, MongoDB quiet, or
+  workflows failing) and normal for `konfirm/geojson`; seven releases a day
+  is the reverse. Judgement, so HA's: a table of expectations per repository
+  in `knell.jinja`. Release cadence (not just the latest) would need knell to
+  provide more than it does now; decide after living with it for a while.
+- **Activity over time** — a chart peaking on the days work was done needs the
+  dates, which Last commit (the latest only) cannot give. Commits per day as
+  an attribute, drawn by e.g. ApexCharts card. Parked: let it run first.
 - **Keep or deprecate** — an overview of repositories gone quiet without being
   archived: the fine line between "kept in case I return to it" and "never
   again", which deserves a deliberate archive rather than abandonment.
@@ -118,3 +127,6 @@ requests, issues, check status, latest release, stars, forks): knell.
   *unavailable* or not updated for too long, batteries running low, devices
   HA thinks exist but that no longer answer. Needs subscribing to HA state,
   which the transport already supports.
+- **Between them** — repositories vouch for one another: `mongo-catalog` going
+  quiet says something about Monger, MongoDB and their workflows at once.
+  Reading patterns across devices is neither a bell's job nor a card's.
