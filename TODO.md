@@ -2,9 +2,6 @@
 
 ## Up next
 
-- [ ] **Try the dashboard examples** — `examples/knell.jinja` and
-      `examples/repositories.yaml` are written against HA's documented
-      behaviour, but not yet seen working in HA.
 - [ ] **Render templates in tests** — tests compare template strings but never
       evaluate them, which let `value_json.values` (a dict method in Jinja)
       through. Evaluate them the way HA would.
