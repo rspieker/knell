@@ -1,0 +1,46 @@
+{#-
+  Macros for knell's GitHub repositories, to keep the policy of what deserves
+  attention in Home Assistant, written once. Copy to config/custom_templates/
+  and reload with the homeassistant.reload_custom_templates action.
+
+  Every macro takes the entity id of a repository's Last push, e.g.
+  sensor.knell_github_rspieker_tui_last_push, and finds its siblings from it.
+-#}
+
+{%- macro knell_repository(entity) -%}
+  {{- entity | regex_replace('^sensor\\.|_last_push$', '') -}}
+{%- endmacro -%}
+
+{%- macro knell_sibling(entity, key, domain='sensor') -%}
+  {{- domain ~ '.' ~ knell_repository(entity) ~ '_' ~ key -}}
+{%- endmacro -%}
+
+{%- macro knell_summary(entity) -%}
+  {%- set release = states(knell_sibling(entity, 'latest_release')) -%}
+  {%- set branch = states(knell_sibling(entity, 'latest_branch')) -%}
+  {%- set issues = states(knell_sibling(entity, 'issues')) | int(0) -%}
+  {%- set pulls = states(knell_sibling(entity, 'pull_requests')) | int(0) -%}
+  {{- release if release not in ['unknown', 'unavailable'] else 'unreleased' }} @ {{ branch -}}
+  {%- if issues %} · {{ issues }} issue{{ 's' if issues > 1 }}{% endif -%}
+  {%- if pulls %} · {{ pulls }} PR{{ 's' if pulls > 1 }}{% endif -%}
+{%- endmacro -%}
+
+{#- failing: tests or workflows report a problem; attention: open issues or pull requests -#}
+{%- macro knell_condition(entity) -%}
+  {%- if is_state(knell_sibling(entity, 'tests', 'binary_sensor'), 'on')
+     or is_state(knell_sibling(entity, 'workflows', 'binary_sensor'), 'on') -%}
+    failing
+  {%- elif states(knell_sibling(entity, 'issues')) | int(0) + states(knell_sibling(entity, 'pull_requests')) | int(0) > 0 -%}
+    attention
+  {%- else -%}
+    fine
+  {%- endif -%}
+{%- endmacro -%}
+
+{%- macro knell_color(entity) -%}
+  {{- {'failing': 'red', 'attention': 'orange'}.get(knell_condition(entity), 'teal') -}}
+{%- endmacro -%}
+
+{%- macro knell_icon(entity) -%}
+  {{- {'failing': 'mdi:flash-alert', 'attention': 'mdi:alert-circle'}.get(knell_condition(entity), 'mdi:source-repository') -}}
+{%- endmacro -%}

@@ -1,0 +1,29 @@
+# Every repository knell announces, most recently pushed first; new ones
+# appear by themselves. Needs the auto-entities and Mushroom custom cards,
+# and examples/knell.jinja in config/custom_templates/.
+type: custom:auto-entities
+card:
+  type: grid
+  columns: 2
+  square: false
+card_param: cards
+sort:
+  method: state
+  reverse: true
+filter:
+  include:
+    - entity_id: sensor.knell_github_*_last_push
+      options:
+        type: custom:mushroom-template-card
+        entity: this.entity_id
+        primary: "{{ state_attr(entity, 'repository') }}"
+        secondary: >-
+          {% from 'knell.jinja' import knell_summary %}{{ knell_summary(entity) }}
+        icon: >-
+          {% from 'knell.jinja' import knell_icon %}{{ knell_icon(entity) }}
+        icon_color: >-
+          {% from 'knell.jinja' import knell_color %}{{ knell_color(entity) }}
+        multiline_secondary: true
+        fill_container: true
+        tap_action:
+          action: more-info

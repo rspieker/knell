@@ -1,17 +1,16 @@
 # TODO
 
-## Tomorrow
+## Up next
 
-- [ ] **Actions from workflow runs** — Actions is *unknown* even for repositories
-      running workflows (e.g. `rspieker/mongo-catalog`, scheduled, committing
-      from within): commits pushed with `GITHUB_TOKEN` trigger no workflows,
-      so the default branch head has no checks. Base it on the latest run of
-      each workflow instead (`GET /repos/{owner}/{repo}/actions/runs`):
-      *problem* when any workflow's latest completed run failed; attributes
-      per workflow (conclusion, when, link).
+- [ ] **Try the dashboard examples** — `examples/knell.jinja` and
+      `examples/repositories.yaml` are written against HA's documented
+      behaviour, but not yet seen working in HA.
 - [ ] **Render templates in tests** — tests compare template strings but never
       evaluate them, which let `value_json.values` (a dict method in Jinja)
       through. Evaluate them the way HA would.
+- [ ] **Fewer requests** — workflows cost ~45 REST requests per poll (~90 an
+      hour of 5000). Conditional requests (`ETag` / `If-None-Match`) are free
+      when nothing changed; worth it once more bells share the limit.
 
 ## Next
 
@@ -22,8 +21,6 @@
       publish the image to GHCR on release.
 - [ ] **launchd agent** — run knell at login on the laptop without a terminal,
       logging to `~/Library/Logs/knell.log`.
-- [ ] **`npm run forget`** — clear every retained knell topic (discovery,
-      states, statuses), removing all knell devices from HA in one go.
 
 ## Known gaps
 
@@ -32,8 +29,8 @@
 - Devices left over from an earlier run are removed on the first poll, unless
   the broker delivers their retained configs only after it; then on the next.
 - Pull request attributes and the latest branch consider the first 100 of each.
-- Actions only reflects the default branch head; repositories without checks
-  get a permanently *unknown* entity. Leave it out for those instead?
+- Workflow runs: the latest 20 per workflow are considered; a long-lived
+  branch without a run among those reports nothing.
 - HA's birth message (`homeassistant/status`) is ignored, which is fine while
   everything is retained; a broker losing its retained store would leave HA
   empty until knell's next poll.
