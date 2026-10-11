@@ -127,6 +127,27 @@ requests, issues, check status, latest release, stars, forks): knell.
   *unavailable* or not updated for too long, batteries running low, devices
   HA thinks exist but that no longer answer. Needs subscribing to HA state,
   which the transport already supports.
+- **The auditor's first shape: a syslog bell** — the first bell that listens
+  rather than polls. Not an analytics engine: knell receives syslog (UDP 514,
+  as one more destination of the router's remote logging), keeps the raw
+  lines locally (daily files, rotated; they hold MACs and addresses, so never
+  in git or a cloud) for analysis at leisure, and announces a handful of
+  plain facts. Judgement stays in HA, as chores ("Investigate: new device on
+  tripwireless"). What 2026-10-11's MikroTik log taught:
+  - DHCP lines carry the server name as program: `defconf` serves the IoT
+    network (tripwireless, 172.16.200.100–250), `trust` a second network
+    (172.16.10.x) whose clients never appear in `wlan1` lines, so they reach
+    it through another access point.
+  - `wlan1` debug lines show associations per MAC ("attempts to associate",
+    "not in local ACL, by default accept"); `user` lines show logins with
+    user, address and method (winbox, api).
+  - Firewall log prefixes (`IOT-OUT`, `IOT-DNS`) give exact source and
+    destination per new connection; the DNS packet log interleaves
+    concurrent replies, so tying questions to clients is approximate.
+  - Facts worth announcing: devices per network and new MACs, the last
+    login (who, from where, how), new outbound destinations per device,
+    addresses handed out by an unexpected DHCP server, SSID or interface
+    changes (a renamed SSID silently cut off four devices for a day).
 - **Between them** — repositories vouch for one another: `mongo-catalog` going
   quiet says something about Monger, MongoDB and their workflows at once.
   Reading patterns across devices is neither a bell's job nor a card's.
