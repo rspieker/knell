@@ -42,6 +42,16 @@
 			}
 		},
 		{
+			"includes": ["**/pages.spec.ts"],
+			"linter": {
+				"rules": {
+					"suspicious": {
+						"noTemplateCurlyInString": "off"
+					}
+				}
+			}
+		},
+		{
 			"includes": ["source/log.ts"],
 			"linter": {
 				"rules": {

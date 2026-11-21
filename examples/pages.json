@@ -1,0 +1,32 @@
+{
+	"shop": {
+		"name": "Shop",
+		"url": "https://shop.example/health.txt",
+		"interval": 5,
+		"contains": { "healthy": "^ok$" },
+		"extract": { "commit": "^commit (\\S+)$" }
+	},
+	"status-api": {
+		"name": "Status API",
+		"url": "https://api.example/status",
+		"headers": { "Authorization": "Bearer ${STATUS_TOKEN}" },
+		"timeout": 10,
+		"extract": {
+			"queue": {
+				"pattern": "\"queued\":\\s*(\\d+)",
+				"config": { "unit_of_measurement": "jobs", "state_class": "measurement" }
+			}
+		}
+	},
+	"newspaper": {
+		"url": "https://news.example/",
+		"interval": 60,
+		"text": true,
+		"contains": {
+			"hometown": { "pattern": "\\bhaarlem\\b", "flags": "i", "name": "Haarlem in the news" }
+		},
+		"count": {
+			"mentions": { "pattern": "\\bhaarlem\\b", "flags": "i", "config": { "icon": "mdi:newspaper" } }
+		}
+	}
+}

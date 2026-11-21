@@ -80,6 +80,7 @@ reads them from `.env` when present.
 | `GITHUB_EXCLUDE`     | Globs to skip, e.g. `konfirm/sandbox,*/scratch-*`   | —                                |
 | `GITHUB_TESTS`       | Globs recognising test workflows (name or file)     | `test*`                          |
 | `GITHUB_BRANCHES`    | Globs of long-lived branches, besides the default   | `main,master,develop,release*`   |
+| `PAGES`              | JSON file of pages to visit, see [Pages](#pages)    | —                                |
 
 A source without its configuration (e.g. no `GITHUB_TOKEN`) simply stays
 silent. An unreachable broker is retried every five seconds.
@@ -150,6 +151,73 @@ with the bell in its heading and an
 showing every repository as a
 [Mushroom](https://github.com/piitaya/lovelace-mushroom) card, most recently
 pushed first, new repositories included.
+
+### Pages
+
+Any page on the web, and whatever it says. Every page in the JSON file
+`PAGES` points to becomes a device, with checks of your choosing: whether a
+pattern occurs, what it captures, or how often it matches. What it means is
+up to HA; knell only reads.
+
+| Entity        | Type                              | Attributes          |
+|---------------|-----------------------------------|---------------------|
+| Reachable     | *connectivity* binary sensor      | error               |
+| Status        | HTTP status code                  |                     |
+| Response time | milliseconds, until the last byte |                     |
+| *contains*    | binary sensor per pattern         | match               |
+| *extract*     | sensor per pattern                | its named groups    |
+| *count*       | sensor per pattern                |                     |
+
+Every entity also carries `url`. A page is reachable when it answers with an
+expected status (any 2xx unless configured otherwise); its checks read the
+page either way, but become *unknown* when no answer came at all.
+
+```json
+{
+	"shop": {
+		"name": "Shop",
+		"url": "https://shop.example/health.txt",
+		"interval": 5,
+		"contains": { "healthy": "^ok$" },
+		"extract": { "commit": "^commit (\\S+)$" }
+	},
+	"newspaper": {
+		"url": "https://news.example/",
+		"interval": 60,
+		"text": true,
+		"contains": { "hometown": { "pattern": "\\bhaarlem\\b", "flags": "i", "name": "Haarlem in the news" } },
+		"count": { "mentions": { "pattern": "\\bhaarlem\\b", "flags": "i", "config": { "icon": "mdi:newspaper" } } }
+	}
+}
+```
+
+| Property   | Purpose                                                        | Default         |
+|------------|----------------------------------------------------------------|-----------------|
+| `url`      | The page, `http` or `https`                                    | —               |
+| `name`     | Device name                                                    | its key         |
+| `interval` | Minutes between visits                                         | `INTERVAL`      |
+| `timeout`  | Seconds to wait for the entire page                            | `30`            |
+| `status`   | Expected status code(s), e.g. `[200, 404]`                     | any 2xx         |
+| `headers`  | Request headers, e.g. `{ "Authorization": "Bearer ${TOKEN}" }` | —               |
+| `text`     | Read the text of an HTML page rather than its source           | `false`         |
+| `contains` | Patterns by name, each a binary sensor: does it occur          | —               |
+| `extract`  | Patterns by name, each a sensor: its first capture group (or the entire match), named groups as attributes | — |
+| `count`    | Patterns by name, each a sensor: how often it matches          | —               |
+
+Patterns are regular expressions matching line by line, so `^ok$` is a line
+saying ok. Give an object instead of a string for `flags` (e.g. `i`), a
+`name`, or a `config` passed to HA as is (`unit_of_measurement`,
+`device_class`, `icon`, …). Extracted values are cut at the 255 characters
+HA accepts as a state. With `text`, scripts, styles and comments go, every
+block starts a line of its own and tags within a line vanish, so
+`Haar<b>lem</b>` reads as `Haarlem`; not a parser, but good enough to look
+for words.
+
+`${NAME}` in a url or header is filled in from the environment, and only for
+the request: HA gets the url as written, so secrets stay where they are. The
+bell rings as often as its most impatient page; the others answer from their
+last visit until due. Anything in the file knell does not understand, a typo
+included, keeps it from starting, rather than quietly checking nothing.
 
 ---
 

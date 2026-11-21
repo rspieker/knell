@@ -6,6 +6,7 @@ import { createGithubSource, loadGithubConfig } from './github.ts';
 import { createKnell } from './knell.ts';
 import { log } from './log.ts';
 import { connectMqtt } from './mqtt.ts';
+import { createPagesSource, loadPagesConfig } from './pages.ts';
 
 const config = loadConfig(process.env);
 
@@ -19,10 +20,14 @@ if (process.argv[2] === 'forget') {
 }
 
 const github = loadGithubConfig(process.env);
+const pages = loadPagesConfig(process.env, { interval: config.interval });
 const sources: Array<Source> = [];
 
 if (github) {
 	sources.push(createGithubSource(github));
+}
+if (pages) {
+	sources.push(createPagesSource(pages));
 }
 
 if (!sources.length) {

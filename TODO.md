@@ -71,7 +71,10 @@
   whether the latest GitHub release made it to npm (half auditor already).
 - **Certificates & domains** — days until TLS certificate and domain
   registration expiry for your own sites.
-- **Endpoints** — status code and response time of your own services.
+- **Forgejo** — the GitHub bell for a Forgejo instance (`FORGEJO_URL`,
+  `FORGEJO_TOKEN`, `FORGEJO_OWNERS`): repositories as devices, workflows
+  from Forgejo Actions runs (check what the instance's API offers first).
+  Together with Pages, HA can tell whether a site runs the latest commit.
 - **Dependencies** — outdated or vulnerable dependencies across your active
   repositories, from the npm registry and GitHub advisories.
 - **The laptop itself** — last Time Machine backup, pending macOS updates,
