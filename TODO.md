@@ -26,6 +26,8 @@
 - Devices left over from an earlier run are removed on the first poll, unless
   the broker delivers their retained configs only after it; then on the next.
 - Pull request attributes and the latest branch consider the first 100 of each.
+- Forgejo considers the latest 50 runs of a repository (for all of its
+  workflows together) and its first 50 branches.
 - Workflow runs: the latest 20 per workflow are considered; a long-lived
   branch without a run among those reports nothing.
 - HA's birth message (`homeassistant/status`) is ignored, which is fine while
@@ -71,10 +73,6 @@
   whether the latest GitHub release made it to npm (half auditor already).
 - **Certificates & domains** — days until TLS certificate and domain
   registration expiry for your own sites.
-- **Forgejo** — the GitHub bell for a Forgejo instance (`FORGEJO_URL`,
-  `FORGEJO_TOKEN`, `FORGEJO_OWNERS`): repositories as devices, workflows
-  from Forgejo Actions runs (check what the instance's API offers first).
-  Together with Pages, HA can tell whether a site runs the latest commit.
 - **Dependencies** — outdated or vulnerable dependencies across your active
   repositories, from the npm registry and GitHub advisories.
 - **The laptop itself** — last Time Machine backup, pending macOS updates,
