@@ -1,6 +1,7 @@
 import { loadConfig } from './config.ts';
 import type { Source } from './device.ts';
 import { status } from './discovery.ts';
+import { createForgejoSource, loadForgejoConfig } from './forgejo.ts';
 import { forget } from './forget.ts';
 import { createGithubSource, loadGithubConfig } from './github.ts';
 import { createKnell } from './knell.ts';
@@ -20,11 +21,15 @@ if (process.argv[2] === 'forget') {
 }
 
 const github = loadGithubConfig(process.env);
+const forgejo = loadForgejoConfig(process.env);
 const pages = loadPagesConfig(process.env, { interval: config.interval });
 const sources: Array<Source> = [];
 
 if (github) {
 	sources.push(createGithubSource(github));
+}
+if (forgejo) {
+	sources.push(createForgejoSource(forgejo));
 }
 if (pages) {
 	sources.push(createPagesSource(pages));

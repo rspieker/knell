@@ -80,6 +80,13 @@ reads them from `.env` when present.
 | `GITHUB_EXCLUDE`     | Globs to skip, e.g. `konfirm/sandbox,*/scratch-*`   | —                                |
 | `GITHUB_TESTS`       | Globs recognising test workflows (name or file)     | `test*`                          |
 | `GITHUB_BRANCHES`    | Globs of long-lived branches, besides the default   | `main,master,develop,release*`   |
+| `FORGEJO_URL`        | Forgejo instance, e.g. `https://codeberg.org`       | —                                |
+| `FORGEJO_TOKEN`      | Token with read access to repositories and users    | —                                |
+| `FORGEJO_OWNERS`     | Users and/or orgs, comma separated                  | —                                |
+| `FORGEJO_ACTIVE_DAYS`| Only repos updated within this many days            | `365`                            |
+| `FORGEJO_EXCLUDE`    | Globs to skip, e.g. `my-org/sandbox`                | —                                |
+| `FORGEJO_TESTS`      | Globs recognising test workflows (file)             | `test*`                          |
+| `FORGEJO_BRANCHES`   | Globs of long-lived branches, besides the default   | `main,master,develop,release*`   |
 | `PAGES`              | JSON file of pages to visit, see [Pages](#pages)    | —                                |
 
 A source without its configuration (e.g. no `GITHUB_TOKEN`) simply stays
@@ -151,6 +158,28 @@ with the bell in its heading and an
 showing every repository as a
 [Mushroom](https://github.com/piitaya/lovelace-mushroom) card, most recently
 pushed first, new repositories included.
+
+### Forgejo
+
+The GitHub bell, for a Forgejo instance of your choosing (Codeberg, or one
+of your own): every repository of `FORGEJO_OWNERS` updated within
+`FORGEJO_ACTIVE_DAYS`, except archived, empty, forked and mirrored ones,
+becomes a device with the very entities and attributes of a GitHub
+repository, so the same cards and templates serve both. Private repositories
+count too, as far as the token can see them; a token is optional, as public
+repositories need none. Its scopes: *read* for repository and user.
+
+Where Forgejo differs:
+
+- It does not say when a repository was pushed to, so **Last push** is the
+  newest commit on any branch.
+- It cannot list workflows, so they are the ones its latest 50 runs name,
+  known by their file (`deploy.yml`, named `deploy`), and `FORGEJO_TESTS`
+  matches those. Judgement is as for GitHub.
+- There is no rate limit to report.
+
+An owner Forgejo does not know (or will not show the token) makes the bell
+go *unavailable* with that reason, rather than removing its repositories.
 
 ### Pages
 

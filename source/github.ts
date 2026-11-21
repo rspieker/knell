@@ -1,5 +1,5 @@
 import type { Entity, Source } from './device.ts';
-import { workflowEntities } from './github/actions.ts';
+import { githubWorkflowEntities } from './github/actions.ts';
 import { type Client, createClient } from './github/client.ts';
 import { device, query, type Repository } from './github/repository.ts';
 import { matchesGlob } from './glob.ts';
@@ -139,7 +139,7 @@ export function createGithubSource(
 				announced.map(async (repository) =>
 					device(
 						repository,
-						await workflowEntities(
+						await githubWorkflowEntities(
 							client,
 							repository.nameWithOwner,
 							repository.defaultBranchRef?.name ?? null,
