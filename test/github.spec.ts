@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { afterEach, beforeEach, describe, it, mock } from 'node:test';
 import { status } from '../source/discovery.ts';
-import type { FailingBranch, WorkflowFacts } from '../source/github/actions.ts';
+import type { FailingBranch, WorkflowFacts } from '../source/workflows.ts';
 import { createGithubSource, type GithubConfig } from '../source/github.ts';
 import { createKnell } from '../source/knell.ts';
 import { createBroker } from './broker.ts';
